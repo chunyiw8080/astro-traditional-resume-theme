@@ -2,12 +2,12 @@ import type { ProjectExperienceConfig } from './types';
 
 const projectExperience: ProjectExperienceConfig[] = [
   {
-    project_name: '某商业银行私有云 Kubernetes 平台交付',
+    project_name: 'Astro-traditional-resume-theme',
     externalURL: true,
-    url: 'https://example.com/project1',
-    description: '基于 VMware vSphere + Immutable OS 方案的企业客户项目，面向某商业银行完成约 30 节点 Kubernetes 平台实施与交付，并在实际客户环境中验证相关部署及运维流程。',
-    responsibility: '负责平台现场部署与实施，针对首次 vSphere 环境适配过程中出现的部署及运行问题完成现象复现、日志与环境信息收集，并协调产品及研发团队分析处理；根据解决方案完成现场操作、验证及后续部署，持续推进问题闭环并最终完成平台交付。',
-    technology: ['VMware vSphere', 'Kubernetes', 'Immutable OS', 'MetalLB', 'Product Delivery', 'VM Automation', 'Issue Coordination'],
+    url: 'https://github.com/chunyiw8080/astro-traditional-resume-theme',
+    description: '使用 Astro 框架构建的传统简历主题，支持多语言、响应式设计和自定义配置，适用于个人简历网站。',
+    responsibility: '负责主题的设计、开发与维护，优化用户体验和性能，并提供详细的文档和示例以便用户快速上手。',
+    technology: ['nodeJS','Astro', 'TypeScript', 'Responsive Design'],
   },
   {
     project_name: '某金融机构容器平台自动化发版项目',
