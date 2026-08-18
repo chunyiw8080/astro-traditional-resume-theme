@@ -1,0 +1,402 @@
+---
+import '../styles/global.css';
+import overall from '@config/overall';
+import skills from '@config/skill';
+import workExperience from '@config/work_exp';
+import projectExperience from '@config/project_exp';
+import educationExperience from '@config/education_exp';
+import extra from '@config/extra';
+import theme from '@config/theme';
+
+const mailto = `mailto:${overall.email}`;
+const pageTitle = `${overall.name} · 个人简历`;
+const colorTheme = theme.colorTheme;
+const allowThemeSwitch = colorTheme === 'Auto';
+const showResumeDownload = overall.enableResumeDownload && Boolean(overall.resumeDownloadURL);
+const fixedTheme = allowThemeSwitch ? undefined : colorTheme;
+const themeStyle = [
+  `--theme-dark-background-color:${theme.darkBackgroundColor}`,
+  `--theme-dark-background-top-color:${theme.darkBackgroundTopColor}`,
+  `--theme-dark-background-bottom-color:${theme.darkBackgroundBottomColor}`,
+  `--theme-light-background-color:${theme.lightBackgroundColor}`,
+  `--theme-light-background-top-color:${theme.lightBackgroundTopColor}`,
+  `--theme-light-background-bottom-color:${theme.lightBackgroundBottomColor}`,
+  `--theme-dark-font-color:${theme.darkFontColor}`,
+  `--theme-light-font-color:${theme.lightFontColor}`,
+  `--theme-dark-highlight-font-color:${theme.darkHighlightFontColor}`,
+  `--theme-light-highlight-font-color:${theme.lightHighlightFontColor}`,
+  `--theme-title-font-size:${theme.titleFontSize}`,
+].join(';');
+const sectionNav = [
+  { id: 'skills', number: '01', label: '专业技能' },
+  { id: 'experience', number: '02', label: '工作经历' },
+  { id: 'projects', number: '03', label: '项目经历' },
+  { id: 'education', number: '04', label: '教育经历' },
+  { id: 'additional', number: '05', label: '附加信息' },
+];
+---
+
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-theme-config={colorTheme}
+  data-theme={fixedTheme}
+  data-theme-preference={fixedTheme ?? 'system'}
+  data-theme-dark-color={theme.darkBackgroundTopColor}
+  data-theme-light-color={theme.lightBackgroundTopColor}
+  style={themeStyle}
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={overall.bannerIntro} />
+    <meta name="theme-color" content={fixedTheme === 'dark' ? theme.darkBackgroundTopColor : theme.lightBackgroundTopColor} data-theme-color />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const configuredTheme = root.dataset.themeConfig;
+        const storageKey = 'resume-theme-preference';
+        const allowedPreferences = ['system', 'light', 'dark'];
+        let storedPreference = 'system';
+
+        if (configuredTheme === 'Auto') {
+          try {
+            storedPreference = localStorage.getItem(storageKey) || 'system';
+          } catch {
+            storedPreference = 'system';
+          }
+        }
+
+        const preference = configuredTheme === 'Auto' && allowedPreferences.includes(storedPreference)
+          ? storedPreference
+          : configuredTheme === 'dark' ? 'dark' : configuredTheme === 'light' ? 'light' : 'system';
+        const resolvedTheme = preference === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          : preference;
+
+        root.dataset.themePreference = preference;
+        root.dataset.theme = resolvedTheme;
+        const browserThemeColor = resolvedTheme === 'dark' ? root.dataset.themeDarkColor : root.dataset.themeLightColor;
+        if (browserThemeColor) document.querySelector('[data-theme-color]')?.setAttribute('content', browserThemeColor);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+    <header class="topbar">
+      <a class="identity" href="#profile" aria-label="返回个人简介">
+        <span class="identity-avatar-wrap" aria-hidden="true">
+          <span class="identity-mark">{overall.monogram}</span>
+          <img class="identity-avatar" data-avatar src={overall.avatarUrl} alt="" width="38" height="38" />
+        </span>
+        <span>{overall.name}<br /><small>{overall.siteLabel}</small></span>
+      </a>
+      <nav aria-label="简历章节">
+        <a href="#skills">技能</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">项目</a>
+        <a href="#education">教育</a>
+        <a href="#additional">其他</a>
+      </nav>
+      <div class="header-actions">
+        {allowThemeSwitch && (
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="当前主题：跟随系统；点击切换到日间模式" title="跟随系统">
+            <svg class="theme-icon theme-icon-system" data-theme-icon="system" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="4.5" width="17" height="12" rx="1.5"></rect>
+              <path d="M9 20h6M12 16.5V20"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-light" data-theme-icon="light" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.5"></circle>
+              <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-dark" data-theme-icon="dark" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 15.2A8.2 8.2 0 0 1 8.8 4a8.3 8.3 0 1 0 11.2 11.2Z"></path>
+            </svg>
+          </button>
+        )}
+        {showResumeDownload && (
+          <a class="resume-download" href={overall.resumeDownloadURL} download aria-label="下载简历">
+            下载简历 <span aria-hidden="true">↓</span>
+          </a>
+        )}
+      </div>
+    </header>
+
+    <main>
+      <section class="profile" id="profile" aria-labelledby="profile-name">
+        <div class="profile-label reveal">
+          <span class="avatar-fallback" aria-hidden="true">{overall.monogram}</span>
+          <img class="avatar" data-avatar src={overall.avatarUrl} alt={`${overall.name} 的头像`} width="52" height="52" />
+          <span class="availability"><i class="status-dot"></i>{overall.availability}</span>
+        </div>
+        <div class="profile-main">
+          <div>
+            <p class="overline reveal">个人简历 · Curriculum Vitae</p>
+            <h1 id="profile-name" class="reveal">{overall.name}</h1>
+            <p class="role reveal">{overall.role}<br /><span>{overall.subtitle}</span></p>
+          </div>
+          <div class="profile-summary reveal">
+            <p>{overall.bannerIntro}</p>
+            <div class="quick-facts">
+              <span><small>所在地</small>{overall.location}</span>
+              <span><small>工作语言</small>{overall.languages}</span>
+              <span><small>邮箱</small><a href={mailto}>{overall.email}</a></span>
+            </div>
+          </div>
+        </div>
+        <a class="scroll-hint" href="#skills">继续阅读 <span>↓</span></a>
+      </section>
+
+      <div class="resume-layout">
+        <aside class="section-index" aria-label="页面目录">
+          <p>目录</p>
+          <ol>
+            {sectionNav.map((item) => (
+              <li><a href={`#${item.id}`} data-nav={item.id}><span>{item.number}</span>{item.label}</a></li>
+            ))}
+          </ol>
+        </aside>
+
+        <div class="resume-content">
+          <section class="resume-section" id="skills" aria-labelledby="skills-title">
+            <div class="section-heading reveal-on-scroll">
+              <p>01 / Expertise</p>
+              <h2 id="skills-title">专业技能</h2>
+            </div>
+            <div class="skill-groups">
+              {skills.map((skill) => (
+                <article class="skill-group reveal-on-scroll">
+                  <h3>{skill.title}</h3>
+                  <p>{skill.description}</p>
+                  <div class="tags">{skill.technology.map((technology) => <span>{technology}</span>)}</div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section class="resume-section" id="experience" aria-labelledby="experience-title">
+            <div class="section-heading reveal-on-scroll">
+              <p>02 / Experience</p>
+              <h2 id="experience-title">工作经历</h2>
+            </div>
+            <div class="timeline">
+              {workExperience.map((work) => (
+                <article class="timeline-item reveal-on-scroll">
+                  <div class="timeline-body">
+                    <div class="job-title">
+                      <h3>{work.company}</h3>
+                      <span class="job-position">{work.job_title}</span>
+                      <span class="job-location">
+                        <svg class="job-meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+                          <circle cx="12" cy="10" r="2.5"></circle>
+                        </svg>
+                        <span>{work.location}</span>
+                      </span>
+                      <span class="job-time">
+                        <svg class="job-meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                          <path d="M16 3v4M8 3v4M3 10h18"></path>
+                        </svg>
+                        <span>{work.time}</span>
+                      </span>
+                    </div>
+                    <p class="job-scope">{work.description}</p>
+                    <ul>{work.content.map((item) => <li>{item}</li>)}</ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section class="resume-section" id="projects" aria-labelledby="projects-title">
+            <div class="section-heading reveal-on-scroll">
+              <p>03 / Projects</p>
+              <h2 id="projects-title">项目经历</h2>
+            </div>
+            <div class="projects-list">
+              {projectExperience.map((project, index) => (
+                <article class="project-item reveal-on-scroll">
+                  <div class="project-number">P/{String(index + 1).padStart(2, '0')}</div>
+                  <div>
+                    <h3>
+                      {project.externalURL && project.url
+                        ? <a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.project_name}（在新窗口打开）`}>
+                            <span>{project.project_name}</span><span class="project-link-arrow" aria-hidden="true">↗</span>
+                          </a>
+                        : project.project_name}
+                    </h3>
+                    <p class="project-brief">{project.description}</p>
+                    <dl>
+                      <dt>个人职责</dt><dd>{project.responsibility}</dd>
+                      <dt>关键技术</dt><dd>{project.technology.join(' · ')}</dd>
+                    </dl>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section class="resume-section" id="education" aria-labelledby="education-title">
+            <div class="section-heading reveal-on-scroll">
+              <p>04 / Education</p>
+              <h2 id="education-title">教育经历</h2>
+            </div>
+            {educationExperience.map((education) => (
+              <div class="education-row reveal-on-scroll">
+                <span>{education.time}</span>
+                <div><h3>{education.institution}</h3><p>{education.major}</p></div>
+                <span>{education.location}</span>
+              </div>
+            ))}
+          </section>
+
+          <section class="resume-section additional" id="additional" aria-labelledby="additional-title">
+            <div class="section-heading reveal-on-scroll">
+              <p>05 / Additional</p>
+              <h2 id="additional-title">附加信息</h2>
+            </div>
+            <div class="additional-grid">
+              {extra.map((item) => (
+                <div class="reveal-on-scroll">
+                  <h3>
+                    {item.externalURL && item.url
+                      ? <a class="additional-link" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.title}（在新窗口打开）`}>
+                          <span>{item.title}</span><span class="additional-link-arrow" aria-hidden="true">↗</span>
+                        </a>
+                      : item.title}
+                  </h3>
+                  {Array.isArray(item.content)
+                    ? <p>{item.content.map((line) => <>{line}<br /></>)}</p>
+                    : <p>{item.content}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="contact" aria-labelledby="contact-title">
+        <p>{overall.closingEyebrow}</p>
+        <h2 id="contact-title">{overall.closingTitle.map((line) => <>{line}<br /></>)}</h2>
+        <a href={mailto}>{overall.email} <span>↗</span></a>
+        <footer>
+          <span>© {overall.footerYear} {overall.name}</span>
+          <span>{overall.socialText}</span>
+          <button type="button" data-top>返回顶部 ↑</button>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      type ThemePreference = 'system' | 'light' | 'dark';
+
+      const themeRoot = document.documentElement;
+      const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+      const themeOrder: ThemePreference[] = ['system', 'light', 'dark'];
+      const themeCopy: Record<ThemePreference, { current: string; next: string }> = {
+        system: { current: '跟随系统', next: '日间模式' },
+        light: { current: '日间模式', next: '夜间模式' },
+        dark: { current: '夜间模式', next: '跟随系统' },
+      };
+
+      const updateThemeButton = (preference: ThemePreference) => {
+        if (!themeButton) return;
+        const copy = themeCopy[preference];
+        themeButton.title = copy.current;
+        themeButton.setAttribute('aria-label', `当前主题：${copy.current}；点击切换到${copy.next}`);
+      };
+
+      const applyTheme = (preference: ThemePreference, persist = false) => {
+        const resolvedTheme = preference === 'system' ? (systemTheme.matches ? 'dark' : 'light') : preference;
+        themeRoot.dataset.themePreference = preference;
+        themeRoot.dataset.theme = resolvedTheme;
+        const browserThemeColor = resolvedTheme === 'dark' ? themeRoot.dataset.themeDarkColor : themeRoot.dataset.themeLightColor;
+        if (browserThemeColor) document.querySelector('[data-theme-color]')?.setAttribute('content', browserThemeColor);
+        updateThemeButton(preference);
+
+        if (persist) {
+          try {
+            localStorage.setItem('resume-theme-preference', preference);
+          } catch {
+            // Theme switching still works when storage is unavailable.
+          }
+        }
+      };
+
+      if (themeButton) {
+        const initialPreference = themeOrder.includes(themeRoot.dataset.themePreference as ThemePreference)
+          ? themeRoot.dataset.themePreference as ThemePreference
+          : 'system';
+        updateThemeButton(initialPreference);
+
+        themeButton.addEventListener('click', () => {
+          const currentPreference = themeOrder.includes(themeRoot.dataset.themePreference as ThemePreference)
+            ? themeRoot.dataset.themePreference as ThemePreference
+            : 'system';
+          const nextPreference = themeOrder[(themeOrder.indexOf(currentPreference) + 1) % themeOrder.length];
+          applyTheme(nextPreference, true);
+        });
+
+        systemTheme.addEventListener('change', () => {
+          if (themeRoot.dataset.themePreference === 'system') applyTheme('system');
+        });
+      }
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll('.reveal-on-scroll');
+
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        revealItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      }
+
+      const sections = document.querySelectorAll('.resume-section');
+      const navLinks = document.querySelectorAll('[data-nav]');
+      if ('IntersectionObserver' in window) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('data-nav') === entry.target.id));
+            }
+          });
+        }, { rootMargin: '-20% 0px -65% 0px' });
+        sections.forEach((section) => sectionObserver.observe(section));
+      }
+
+      const progress = document.querySelector<HTMLElement>('[data-progress]');
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const available = document.documentElement.scrollHeight - window.innerHeight;
+            const ratio = available > 0 ? Math.min(window.scrollY / available, 1) : 0;
+            if (progress) progress.style.transform = `scaleX(${ratio})`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      document.querySelector('[data-top]')?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
+
+      document.querySelectorAll<HTMLImageElement>('[data-avatar]').forEach((avatar) => {
+        avatar.addEventListener('error', () => avatar.classList.add('is-hidden'));
+      });
+    </script>
+  </body>
+</html>
