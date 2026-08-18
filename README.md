@@ -1,5 +1,8 @@
 # Astro 个人简历
 
+## 预览
+https://astro-traditional-resume-theme.pages.dev
+
 - 这是传统个人简历站点的 Astro 静态版本。页面内容全部来自 `src/config/`，修改简历时无需编辑 `src/pages/index.astro`。
 - node版本: 22.22.1
 - 默认禁止搜索引擎机器人抓取站点
