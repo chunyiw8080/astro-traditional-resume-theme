@@ -22,19 +22,19 @@ const theme: ThemeConfig = {
   // 大标题（站点所有者姓名）字号，接受任意 CSS 长度值（px / rem / vw / clamp 等）
   titleFontSize: 'clamp(84px, 13vw, 200px)',
 
-  darkBackgroundColor: '#1D1B2A', //#13111C
-  darkBackgroundTopColor: '#13111C',
-  darkBackgroundBottomColor: '#13111C',
+  darkBackgroundColor: '#000000',
+  darkBackgroundTopColor: '#FF7CA2',
+  darkBackgroundBottomColor: '#FF7CA2',
 
-  lightBackgroundColor: '#F8F7FC',
-  lightBackgroundTopColor: '#FFFFFF',
-  lightBackgroundBottomColor: '#17202c',
+  lightBackgroundColor: '#8AEED1',
+  lightBackgroundTopColor: '#F35B83',
+  lightBackgroundBottomColor: '#F35B83',
 
-  darkFontColor: '#F3F3F6',
-  lightFontColor: '#1E1B2E',
+  darkFontColor: '#FFFFFF',
+  lightFontColor: '#000000',
 
-  darkHighlightFontColor: '#F72585',
-  lightHighlightFontColor: '#F72585',
+  darkHighlightFontColor: '#FFFFFF',
+  lightHighlightFontColor: '#000000',
 };
 
 export default theme;

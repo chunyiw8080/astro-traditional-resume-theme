@@ -1,19 +1,19 @@
 :root {
   --paper: var(--theme-light-background-top-color);
   --ink: var(--theme-light-font-color);
-  --muted: #66707c;
-  --body-muted: #4f5964;
-  --line: #cfd2d2;
+  --muted: rgba(0, 0, 0, .68);
+  --body-muted: rgba(0, 0, 0, .78);
+  --line: rgba(0, 0, 0, .22);
   --accent: var(--theme-light-highlight-font-color);
-  --accent-soft: #e5ebfa;
+  --accent-soft: rgba(0, 0, 0, .08);
   --surface: var(--theme-light-background-color);
   --chrome-line: rgba(23, 32, 44, .18);
   --image-line: rgba(23, 32, 44, .16);
-  --tag-ink: #4e5864;
+  --tag-ink: rgba(0, 0, 0, .78);
   --contact-bg: var(--theme-light-background-bottom-color);
-  --contact-ink: var(--theme-dark-font-color);
-  --contact-muted: rgba(255, 255, 255, .6);
-  --contact-line: rgba(255, 255, 255, .25);
+  --contact-ink: var(--theme-light-font-color);
+  --contact-muted: rgba(0, 0, 0, .68);
+  --contact-line: rgba(0, 0, 0, .25);
   --contact-accent: var(--theme-light-highlight-font-color);
   --sans: Consolas, "Times New Roman", "Courier New", KaiTi, "Kaiti SC", STKaiti, monospace;
   color-scheme: light;
@@ -22,15 +22,15 @@
 html[data-theme="dark"] {
   --paper: var(--theme-dark-background-top-color);
   --ink: var(--theme-dark-font-color);
-  --muted: #aab4c0;
-  --body-muted: #c9d0d8;
-  --line: #3d4856;
+  --muted: rgba(255, 255, 255, .68);
+  --body-muted: rgba(255, 255, 255, .78);
+  --line: rgba(255, 255, 255, .24);
   --accent: var(--theme-dark-highlight-font-color);
-  --accent-soft: #253653;
+  --accent-soft: rgba(255, 255, 255, .12);
   --surface: var(--theme-dark-background-color);
   --chrome-line: rgba(244, 242, 235, .18);
   --image-line: rgba(244, 242, 235, .2);
-  --tag-ink: #bac3ce;
+  --tag-ink: rgba(255, 255, 255, .78);
   --contact-bg: var(--theme-dark-background-bottom-color);
   --contact-ink: var(--theme-dark-font-color);
   --contact-muted: rgba(244, 242, 235, .62);
